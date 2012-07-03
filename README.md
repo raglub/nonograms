@@ -1,6 +1,6 @@
 # Nonograms
 
-TODO: Write a gem description
+  Solve the puzzle game nonograms.
 
 ## Installation
 
@@ -18,12 +18,43 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+    For example:
 
-## Contributing
+              2           1
+          1   1   1       1
+        +---+---+---+---+---+
+      1 |   |   |   |   |   |
+        +---+---+---+---+---+
+    2 1 |   |   |   |   |   |
+        +---+---+---+---+---+
+    2 1 |   |   |   |   |   |
+        +---+---+---+---+---+
+    2 1 |   |   |   |   |   |
+        +---+---+---+---+---+
 
-1. Fork it
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Added some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+We should get result
+
+              2           1
+          1   1   1       1
+        +---+---+---+---+---+
+      1 |   | # |   |   |   |
+        +---+---+---+---+---+
+    2 1 |   | # | # |   | # |
+        +---+---+---+---+---+
+    2 1 | # |   |   |   |   |
+        +---+---+---+---+---+
+    2 1 |   | # |   |   | # |
+        +---+---+---+---+---+
+
+in line result should be "01000"+"01101"+"10000"+"01001"
+
+You can solve this example when you write the code below
+
+    > require "nonograms"
+
+    > vertical = [[1], [2, 1], [1], [], [1, 1]]
+    > horizontal = [[1], [2, 1], [1], [1, 1]]
+    > @nonograms = Nonograms.new(vertical, horizontal)
+    > @nonograms.solve
+    > @nonograms.results #=> ["01000"+"01101"+"10000"+"01001", ...]
+
