@@ -54,6 +54,24 @@ You can solve this example when you write the code below
 
     > vertical = [[1], [2, 1], [1], [], [1, 1]]
     > horizontal = [[1], [2, 1], [1], [1, 1]]
-    > @nonograms = Nonograms::Solver.new(vertical, horizontal)
+    > @nonograms = Nonograms.new(horizontal, vertical)
     > @nonograms.solve #=> ["01000"+"01101"+"10000"+"01001", ...]
+
+
+Display result on the console
+
+    > @nonograms.display
+    #=> result: 0
+    #=>
+    #=>   ■
+    #=>   ■ ■   ■
+    #=> ■
+    #=>   ■     ■
+    #=>
+    #=> result: 1
+    #=>
+    #=>   ■
+    #=> ■ ■     ■
+    #=>     ■
+    #=>   ■     ■
 

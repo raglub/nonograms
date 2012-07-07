@@ -1,3 +1,3 @@
-module Nonograms
-  VERSION = "0.1.1"
+class Nonograms
+  VERSION = "0.2.0"
 end

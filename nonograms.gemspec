@@ -2,7 +2,7 @@
 require File.expand_path('../lib/nonograms/version', __FILE__)
 
 Gem::Specification.new do |gem|
-  gem.authors       = ["Michał Szyma"]
+  gem.authors       = ["Michal Szyma"]
   gem.email         = ["raglub.ruby@gmail.com"]
   gem.description   = %q{solve the puzzle game nonograms.}
   gem.summary       = %q{Solve Nonograms.}
