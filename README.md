@@ -18,7 +18,7 @@ Or install it yourself as:
 
 ## Usage
 
-    For example:
+For example:
 
               2           1
           1   1   1       1
@@ -57,6 +57,9 @@ You can solve this example when you write the code below
     > @nonograms = Nonograms.new(horizontal, vertical)
     > @nonograms.solve #=> ["01000"+"01101"+"10000"+"01001", ...]
 
+Check whether entered data are properly
+
+    > @nonograms.properly_data_entered? #=> true
 
 Display result on the console
 

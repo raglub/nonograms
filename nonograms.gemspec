@@ -6,7 +6,7 @@ Gem::Specification.new do |gem|
   gem.email         = ["raglub.ruby@gmail.com"]
   gem.description   = %q{solve the puzzle game nonograms.}
   gem.summary       = %q{Solve Nonograms.}
-  gem.date          = "2012-07-07"
+  gem.date          = "2012-07-08"
   gem.homepage      = "https://github.com/raglub/nonograms"
 
   gem.files         = `git ls-files`.split($\)

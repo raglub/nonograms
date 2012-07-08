@@ -1,6 +1,7 @@
 # encoding: utf-8
 
 class Nonograms
+
   class Display
 
     def initialize(results, amount_row, amount_column)

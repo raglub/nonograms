@@ -2,8 +2,9 @@
 require "nonograms/version"
 require "nonograms/display"
 require "nonograms/checker"
+require "nonograms/matrix"
 
-# class can solve the puzzle game Nonograms
+# class can solve the matrix game Nonograms
 class Nonograms
 
   def initialize(horizontal, vertical)
@@ -11,7 +12,7 @@ class Nonograms
     @horizontal = horizontal
     @amount_row = horizontal.length
     @amount_column = vertical.length
-    @puzzle = empty_puzzle
+    @matrix = Nonograms::Matrix.new(@amount_row, @amount_column)
     @results = []
   end
 
@@ -27,39 +28,23 @@ class Nonograms
     Nonograms::Display.new(@results, @amount_row, @amount_column)
   end
 
-  # count amount values '1' in vector
-  # for example:
-  # * vector : [0, 1, 1, 0, 0, 1, 0]
-  # * return: [2, 1]
-  def count_vector(vector)
-    vector.join("").scan(/[1]+/).map{|element| element.length}
-  end
-
-  # count amount values '1' in vertical vector
-  def count_vertical(column)
-    vertical_vector = @puzzle[0...@amount_row].map{|vector| vector[column]}
-    count_vector(vertical_vector)
-  end
-
-  # count amount values '1' in vertical vector
-  def count_horizontal(row)
-    horizontal_vector = @puzzle[row][0...@amount_column]
-    count_vector(horizontal_vector)
+  def properly_data_entered?
+    Nonograms::Checker.new(@vertical, @horizontal).properly_data_entered?
   end
 
   def vertical_acceptable?(row, column)
     unless row == @amount_row-1
-      vector_acceptable?( @vertical[column], count_vertical(column) )
+      vector_acceptable?( @vertical[column], @matrix.count_vertical(column) )
     else
-      return  ( @vertical[column] == count_vertical(column) )
+      return  ( @vertical[column] == @matrix.count_vertical(column) )
     end
   end
 
   def horizontal_acceptable?(row, column)
     unless column == @amount_column-1
-      vector_acceptable?( @horizontal[row], count_horizontal(row) )
+      vector_acceptable?( @horizontal[row], @matrix.count_horizontal(row) )
     else
-      return ( @horizontal[row] == count_horizontal(row))
+      return ( @horizontal[row] == @matrix.count_horizontal(row))
     end
   end
 
@@ -75,22 +60,13 @@ class Nonograms
     return true
   end
 
-  # get the matrix with cells values zero
-  def empty_puzzle
-    result = []
-    @amount_row.times do |index|
-      result << [0]*@amount_column
-    end
-    result
-  end
-
 private
 
-  # run recursion from fixed position row and column if @puzzle is acceptable
+  # run recursion from fixed position row and column if @matrix is acceptable
   def run_recursion(row = 0, column = 0)
     return unless vertical_acceptable?(row, column) and horizontal_acceptable?(row, column)
     if row == @amount_row-1 and column == @amount_column-1
-      @results << Marshal.load(Marshal.dump(@puzzle)).flatten.join("")
+      @results << Marshal.load(Marshal.dump(@matrix.get)).flatten.join("")
       return nil
     end
     next_cell_set(0, row, column)
@@ -100,9 +76,9 @@ private
   def next_cell_set(value, row, column)
     new_row = (row*@amount_column + column + 1) / @amount_column
     new_column = (row*@amount_column + column + 1) % @amount_column
-    @puzzle[new_row][new_column] = value
+    @matrix.set(new_row, new_column, value)
     run_recursion(new_row, new_column)
-    @puzzle[new_row][new_column] = 0
+    @matrix.set(new_row, new_column, 0)
   end
 
 end
