@@ -1,8 +1,8 @@
 # encoding: utf-8
 require "nonograms/version"
+require "nonograms/logic"
 require "nonograms/display"
 require "nonograms/checker"
-require "nonograms/matrix"
 
 # class can solve the matrix game Nonograms
 class Nonograms
@@ -12,7 +12,7 @@ class Nonograms
     @horizontal = horizontal
     @amount_row = horizontal.length
     @amount_column = vertical.length
-    @matrix = Nonograms::Matrix.new(@amount_row, @amount_column)
+    @logic = Nonograms::Logic.new(@horizontal, @vertical)
     @results = []
   end
 
@@ -25,60 +25,36 @@ class Nonograms
 
   # display the result on console
   def display
-    Nonograms::Display.new(@results, @amount_row, @amount_column)
+    Nonograms::Display.new(@results, @horizontal, @vertical)
   end
 
   def properly_data_entered?
     Nonograms::Checker.new(@vertical, @horizontal).properly_data_entered?
   end
 
-  def vertical_acceptable?(row, column)
-    unless row == @amount_row-1
-      vector_acceptable?( @vertical[column], @matrix.count_vertical(column) )
-    else
-      return  ( @vertical[column] == @matrix.count_vertical(column) )
-    end
-  end
-
-  def horizontal_acceptable?(row, column)
-    unless column == @amount_column-1
-      vector_acceptable?( @horizontal[row], @matrix.count_horizontal(row) )
-    else
-      return ( @horizontal[row] == @matrix.count_horizontal(row))
-    end
-  end
-
-  def vector_acceptable?(origin, piece)
-    return false if piece.length > origin.length
-    piece.each_with_index do |value, index|
-      if index == piece.length-1
-        return false unless origin[index] >= piece[index]
-      else
-        return false unless origin[index] == piece[index]
-      end
-    end
-    return true
-  end
-
 private
 
   # run recursion from fixed position row and column if @matrix is acceptable
   def run_recursion(row = 0, column = 0)
-    return unless vertical_acceptable?(row, column) and horizontal_acceptable?(row, column)
-    if row == @amount_row-1 and column == @amount_column-1
-      @results << Marshal.load(Marshal.dump(@matrix.get)).flatten.join("")
-      return nil
-    end
+    return unless @logic.cross_acceptable?(row, column)
+    return if last_cell?(row, column)
     next_cell_set(0, row, column)
     next_cell_set(1, row, column)
+  end
+
+  def last_cell?(row, column)
+    return false unless row == @amount_row-1 and column == @amount_column-1
+    @results << Marshal.load(Marshal.dump(@logic.matrix.get)).flatten.join("")
+    true
   end
 
   def next_cell_set(value, row, column)
     new_row = (row*@amount_column + column + 1) / @amount_column
     new_column = (row*@amount_column + column + 1) % @amount_column
-    @matrix.set(new_row, new_column, value)
+
+    @logic.matrix.set(new_row, new_column, value)
     run_recursion(new_row, new_column)
-    @matrix.set(new_row, new_column, 0)
+    @logic.matrix.set(new_row, new_column, 0)
   end
 
 end
