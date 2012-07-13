@@ -19,7 +19,11 @@ class Nonograms
   # solve the nonograms
   def solve
     return @results unless @results.empty?
+
     run_recursion
+    @logic.matrix.set(0, 0, 1)
+    run_recursion
+
     @results
   end
 
@@ -48,6 +52,7 @@ private
     true
   end
 
+  # set next cell of matrix on "value"
   def next_cell_set(value, row, column)
     new_row = (row*@amount_column + column + 1) / @amount_column
     new_column = (row*@amount_column + column + 1) % @amount_column

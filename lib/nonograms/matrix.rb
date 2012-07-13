@@ -50,11 +50,7 @@ class Nonograms
 
     # get the matrix with cells values zero
     def create_matrix
-      result = []
-      @height.times do |index|
-        result << [0]*@width
-      end
-      result
+      (0...@height).to_a.map {|element| [0]*@width}
     end
   end
 end

@@ -17,10 +17,12 @@ class Nonograms
       @matrix
     end
 
+    # the vertical and the horizontal vectors have acceptable values
     def cross_acceptable?(row, column)
       vertical_acceptable?(row, column) and horizontal_acceptable?(row, column)
     end
 
+    # the vertical vector have acceptable values
     def vertical_acceptable?(row, column)
       unless row == @amount_row-1
         vector_acceptable?( @vertical[column], @matrix.count_vertical(column) )
@@ -29,6 +31,7 @@ class Nonograms
       end
     end
 
+    # the horizontal vector have acceptable values
     def horizontal_acceptable?(row, column)
       unless column == @amount_column-1
         vector_acceptable?( @horizontal[row], @matrix.count_horizontal(row) )
@@ -37,6 +40,13 @@ class Nonograms
       end
     end
 
+    # the vector have acceptable values
+    # * origin - vector base
+    # * piece - vector to verifi
+    # * return - true or false
+    # example:
+    # origin = [3, 2, 2]; piece = [3, 1]; return true
+    # origin = [3, 2, 2]; piece = [3, 3]; return false
     def vector_acceptable?(origin, piece)
       return false if piece.length > origin.length
       piece.each_with_index do |value, index|
